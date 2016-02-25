@@ -1,9 +1,25 @@
 var express = require('express');
 var app = express();
-var server = require('http').createServer(app);
+//var server = require('http').createServer(app);
+
+
+var https = require('https');
+var fs = require('fs');
+
+var options = {
+	key: fs.readFileSync('./keys/server-key.pem'),
+	ca: [fs.readFileSync('./keys/ca-cert.pem')],
+	cert: fs.readFileSync('./keys/server-cert.pem')
+};
+
+//https.createServer(options,function(req,res){
+//	res.writeHead(200);
+//	res.end('hello world\n');
+//}).listen(3000,'127.0.0.1');
+
+var server = https.createServer(options, app);
 var SkyRTC = require('skyrtc').listen(server);
 var path = require("path");
-
 var port = process.env.PORT || 3000;
 server.listen(port);
 

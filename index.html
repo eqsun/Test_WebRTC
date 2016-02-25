@@ -92,9 +92,25 @@
   var msgs = document.getElementById("msgs");
   var sendFileBtn = document.getElementById("sendFileBtn");
   var files = document.getElementById("files");
+    var msgIpt = document.getElementById("msgIpt")
   var rtc = SkyRTC();
 
   /**********************************************************/
+
+   msgIpt.onkeypress = function(event) {
+	var e = e||window.event;
+	if (e.keyCode ==13){
+//    		var msgIpt = document.getElementById("msgIpt"),
+        		msg = msgIpt.value,
+       		 p = document.createElement("p");
+    		p.innerText = "me: " + msg;
+    //广播消息
+    		rtc.broadcast(msg);
+    		msgIpt.value = "";
+    		msgs.appendChild(p);
+  	};
+    };	 
+
   sendBtn.onclick = function(event){
     var msgIpt = document.getElementById("msgIpt"),
         msg = msgIpt.value,
@@ -214,6 +230,6 @@
     msgs.appendChild(p);
   });
   //连接WebSocket服务器
-  rtc.connect("ws:" + window.location.href.substring(window.location.protocol.length).split('#')[0], window.location.hash.slice(1));
+  rtc.connect("wss:" + window.location.href.substring(window.location.protocol.length).split('#')[0], window.location.hash.slice(1));
 </script>
 </html>
